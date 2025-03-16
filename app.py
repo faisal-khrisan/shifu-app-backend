@@ -87,22 +87,26 @@ def generate_recipe():
 
         # Separate the formatted text and JSON
 
-
         # Use regex to extract JSON part
         json_match = re.search(r'\{.*\}', response_content, re.DOTALL)
+        json_part = ""  # Ensure json_part is always defined
+
         if json_match:
             json_part = json_match.group(0)
-            # Parse JSON
-            recipe_json = json.loads(json_part)
+            try:
+                recipe_json = json.loads(json_part)
+            except json.JSONDecodeError:
+                recipe_json = {}  # If JSON is invalid, return empty
         else:
             recipe_json = {}
 
         # Get the text part (before JSON)
         text_part = response_content.replace(json_part, '').strip() if json_part else response_content
 
+        # Return the response
         return jsonify({
-            'formatted_recipe': text_part,  # Clean text to display
-            'recipe_data': recipe_json      # Structured data to use in the app
+            'formatted_recipe': text_part,
+            'recipe_data': recipe_json
         })
 
     except Exception as e:
