@@ -68,7 +68,7 @@ def generate_recipe():
         )
 
         completion = client.chat.completions.create(
-            model="rekaai/reka-flash-3:free",
+            model="qwen/qwq-32b:free",
             messages=[
                 {
                     "role": "system",
@@ -80,7 +80,7 @@ def generate_recipe():
                 }
             ],
             temperature=0.5,
-            max_tokens=4000
+            max_tokens=2500
         )
 
         response_content = completion.choices[0].message.content.strip()
